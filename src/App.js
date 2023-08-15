@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import DoHeader from './components/DoHeader'
+import List from "./components/DoList";
 
-function App() {
+export default function App() {
+  const [tasks, setTasks] = React.useState([{ id: 1, name: ''  }]);
+  
+  function AddTask() {
+    setTasks(prevTasks => [...prevTasks, { id: prevTasks.length + 1, name: ''  }]);
+  }
+
+  function TaskNameChange(taskId, newName) {
+    setTasks(prevTasks =>
+      prevTasks.map(task => (task.id === taskId ? { ...task, name: newName } : task))
+    );
+  }
+    
+
+  const result = tasks.map(task => (
+    <List key={task.id} taskNameValue={task.name} TaskNameChange={newName => TaskNameChange(task.id, newName)} />
+  ));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+    <>
+      <DoHeader AddBtn={AddTask} TaskNameChange={newName => TaskNameChange(tasks.length, newName)} />
+      {result}
+    </>
+  )}
