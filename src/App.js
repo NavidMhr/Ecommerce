@@ -1,28 +1,25 @@
 import React from "react";
-import DoHeader from './components/DoHeader'
-import List from "./components/DoList";
+import { BrowserRouter , Routes , Route } from "react-router-dom";
+import Home from './pages/home'
+import About from './pages/about'
+import Layout from "./components/layout";
+import NotFound from './pages/NotFound'
 
-export default function App() {
-  const [tasks, setTasks] = React.useState([{ id: 1, name: ''  }]);
-  
-  function AddTask() {
-    setTasks(prevTasks => [...prevTasks, { id: prevTasks.length + 1, name: ''  }]);
-  }
+export default function App(){
 
-  function TaskNameChange(taskId, newName) {
-    setTasks(prevTasks =>
-      prevTasks.map(task => (task.id === taskId ? { ...task, name: newName } : task))
-    );
-  }
-    
 
-  const result = tasks.map(task => (
-    <List key={task.id} taskNameValue={task.name} TaskNameChange={newName => TaskNameChange(task.id, newName)} />
-  ));
+    return(
+        <>
+        <BrowserRouter>
+        <Routes>
+            <Route  path="/" element={<Layout/>} >
+                <Route path="home" element={<Home/>} />
+                <Route path="about" element={<About/>} />
+                <Route path="*" element={<NotFound/>}/>
 
-  return (
-    <>
-      <DoHeader AddBtn={AddTask} TaskNameChange={newName => TaskNameChange(tasks.length, newName)} />
-      {result}
-    </>
-  )}
+            </Route>
+        </Routes>
+        </BrowserRouter>
+        </>
+    )
+}
